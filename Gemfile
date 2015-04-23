@@ -6,9 +6,8 @@ gem 'minitest'
 gem 'openssl'
 gem 'sinatra'
 gem 'thin'
-
-gem 'activerecord'
 gem 'rake'
+gem 'activerecord'
 gem 'sinatra-activerecord'
 
 group :development do

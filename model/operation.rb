@@ -1,6 +1,6 @@
 require 'sinatra/activerecord'
 require_relative '../environments'
 
-class Operation < Activerecord::Base
+class CreditCard < Activerecord::Base
 
 end
