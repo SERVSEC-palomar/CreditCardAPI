@@ -54,11 +54,12 @@ class CreditCardAPI < Sinatra::Base
 		end
   end
 
-    get '/api/v1/all' do
-    begin
-      CreditCard.all.to_json
-    rescue
-      halt 500
-    end
+  get '/api/v1/all' do
+  	card = CreditCard
+	unless card.nil?
+		card.all.to_json
+	else
+	  return 500
+	end
   end
 end
