@@ -1,7 +1,7 @@
  # Doc ruby URL http://ruby-doc.org/stdlib-2.0/libdoc/json/rdoc/JSON.html
 
 require_relative '../lib/luhn_validator.rb'
-require_relative '../environments'
+require_relative '../environments.rb'
 require 'sinatra/activerecord'
 require 'json'
 require 'openssl'

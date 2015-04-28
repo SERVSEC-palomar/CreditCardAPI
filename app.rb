@@ -1,4 +1,6 @@
+
 require "sinatra"
+require 'sinatra/activerecord'
 require "json"
 require "./model/credit_card.rb"
 
@@ -52,12 +54,11 @@ class CreditCardAPI < Sinatra::Base
 		end
   end
 
-  get '/api/v1/all' do
-	unless card.empty?
-		CreditCard.all.to_json
-		return 200
-	else
-	  return 500
-	end
+    get '/api/v1/all' do
+    begin
+      CreditCard.all.to_json
+    rescue
+      halt 500
+    end
   end
 end
