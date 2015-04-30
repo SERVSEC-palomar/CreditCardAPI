@@ -5,6 +5,9 @@ require_relative '../environments.rb'
 require 'sinatra/activerecord'
 require 'json'
 require 'openssl'
+require 'rbnacl/libsodium'
+
+require 'base64'
 
 class CreditCard  < ActiveRecord::Base
   include LuhnValidator # TODO: mixin the LuhnValidator using an 'include' statement
@@ -19,6 +22,21 @@ class CreditCard  < ActiveRecord::Base
   #  @owner = owner
   #  @credit_network = credit_network
   #end
+  def key
+    ENV['DB_KEY'].dup.force_encoding Encoding::BINARY
+  end
+
+  def number=(params_str)
+    secret_box = RbNaCl::SecretBox.new(key)
+    self.nonce = RbNaCl::Random.random_bytes(secret_box.nonce_bytes)
+    self.encrypted_number = Base64.encode64(secret_box.encrypt(self.nonce, "#{params_str}"))
+    self.nonce = Base64.encode64(self.nonce)
+  end  
+
+  def number
+    secret_box = RbNaCl::SecretBox.new(key)
+    secret_box.decrypt(Base64.decode64(self.nonce), Base64.decode64(self.encrypted_number))
+  end  
 
   # returns json string
   def to_json

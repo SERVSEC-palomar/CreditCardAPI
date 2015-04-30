@@ -17,8 +17,11 @@ GEM
     arel (6.0.0)
     bond (0.5.1)
     builder (3.2.2)
+    config_env (0.1.0)
     daemons (1.2.2)
     eventmachine (1.0.7)
+    ffi (1.9.8)
+    hirb (0.7.3)
     i18n (0.7.0)
     json (1.8.2)
     minitest (5.6.1)
@@ -29,6 +32,10 @@ GEM
     rack-test (0.6.3)
       rack (>= 1.0)
     rake (10.4.2)
+    rbnacl (3.1.2)
+      ffi
+    rbnacl-libsodium (1.0.2)
+      rbnacl (~> 3.0, >= 3.0.1)
     ripl (0.7.1)
       bond (~> 0.5.1)
     ripl-multi_line (0.3.1)
@@ -64,10 +71,13 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord
+  config_env
+  hirb
   json
   minitest
   openssl
   rake
+  rbnacl-libsodium
   sinatra
   sinatra-activerecord
   sqlite3

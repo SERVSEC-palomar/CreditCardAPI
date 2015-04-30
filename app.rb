@@ -3,9 +3,17 @@ require "sinatra"
 require 'sinatra/activerecord'
 require "json"
 require "./model/credit_card.rb"
+require 'config_env'
 
 # Credit Card Web Service
 class CreditCardAPI < Sinatra::Base
+
+  configure :development, :test do
+    require 'hirb'
+    Hirb.enable
+    ConfigEnv.path_to_config("#{__dir__}/config/config_env.rb")
+  end
+
 
   get '/' do
     "The CreditCardAPI service is running"
@@ -31,10 +39,10 @@ class CreditCardAPI < Sinatra::Base
 				credit_network = req['credit_network']
 			end
 
-			card = CreditCard.new(number: number,
-		                   expiration_date: expiration_date,
-		                   owner: owner,
-		                   credit_network: credit_network)
+			card = CreditCard.new(number: ['number = ?', "#{number}"],
+		                   expiration_date: ['expiration_date = ?', "#{expiration_date}"],
+		                   owner: ['owner = ?', "#{owner}"],
+		                   credit_network: ['credit_network = ?', "#{credit_network}"])
 
 			if card.validate_checksum
 				 if card.save
