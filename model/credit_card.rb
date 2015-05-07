@@ -11,7 +11,7 @@ require 'base64'
 class CreditCard < ActiveRecord::Base
   include LuhnValidator # TODO: mixin the LuhnValidator using an 'include' statement
   def key
-      ENV['DB_KEY'].dup.force_encoding Encoding::BINARY
+      Base64.urlsafe_decode64(ENV['DB_KEY'])
     end
 
     def number=(params_str)

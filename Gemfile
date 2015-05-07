@@ -16,6 +16,7 @@ gem 'rbnacl-libsodium'
 group :development do
   gem 'sqlite3'
   gem 'tux'
+  gem 'hirb'
 end
 
 group :development, :test do
@@ -23,6 +24,7 @@ group :development, :test do
 end
 
 group :test do
+  gem 'minitest'
   gem 'rack'
   gem 'rack-test'
 end

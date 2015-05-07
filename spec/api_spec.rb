@@ -18,7 +18,8 @@ describe 'CreditCardAPI' do
     
      
     it 'should be ok' do
-    get '/api/v1/credit_card/validate?card_number=4539075978941247'
+    get '/api/v1/credit_card/validate?card_number=#{number}'
+      last_response.status.must_equal 200
       card = CreditCard.new(number, nil, nil, nil)
       card.validate_checksum.must_equal true
     end
