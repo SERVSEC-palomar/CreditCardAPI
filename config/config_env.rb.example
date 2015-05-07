@@ -1,6 +1,6 @@
-# Copy this file to [app]/config/config_env.rb
+#Copy this files to [app]/config/config_env.rb
 # Replace [*] with credentials/keys/etc.
 
 config_env do
-  set 'DB_KEY', "[database encryption key]"
+  set 'DB_KEY',"[database encryption key]"
 end
