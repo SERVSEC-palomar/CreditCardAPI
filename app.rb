@@ -81,17 +81,8 @@ class CreditCardAPI < Sinatra::Base
   end
 
   get '/api/v1/credit_card/validate' do
-    logger.info ('VALIDATE')
-    begin
-      param :card_number, Integer
-      fail('Enter card number') unless params[:card_number]
-      card = CreditCard.new(number: params[:card_number])
-      #{"Card" => params[:card_number], "validated" => card.validate_checksum}.to_json
-      haml :validated, locals: {number: card.number, validate_checksum: card.validate_checksum}
-    rescue => e
-      logger.error(e)
-      redirect '/api/v1/credit_card'
-    end
+    card = CreditCard.new(number: params[:card_number])
+    {"Card" => params[:card_number], "validated" => card.validate_checksum}.to_json
   end
 
   post '/api/v1/credit_card' do
