@@ -1,0 +1,16 @@
+!!! 5
+%html
+  %head
+    %title Credit Card API
+  %body
+    %h1 Welcome to Credit Card API
+    - if @current_user
+      = "Welcome #{@current_user.username} | "
+      %a{ href: '/logout' }
+        logout
+    - else
+      %a{ href: '/login' }
+        = "login | "
+      %a{ href: '/register' }
+        register
+    = yield

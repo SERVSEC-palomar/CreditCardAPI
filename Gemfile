@@ -12,11 +12,14 @@ gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'config_env'
 gem 'rbnacl-libsodium'
+gem 'protected_attributes'
+gem 'haml'
 
 group :development do
   gem 'sqlite3'
   gem 'tux'
   gem 'hirb'
+  gem 'shotgun'
 end
 
 group :development, :test do
