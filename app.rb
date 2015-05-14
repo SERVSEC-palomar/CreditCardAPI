@@ -77,7 +77,7 @@ class CreditCardAPI < Sinatra::Base
   get '/api/v1/credit_card/?' do
     'TO date, services offered include<br>' \
     ' GET api/v1/credit_card/validate?card_number=[card number]<br>' \
-    ' GET api/v1/credit_card/everything'
+    ' GET <a href="/api/v1/credit_card/everything"> Numbers </a> '
   end
 
   get '/api/v1/credit_card/validate' do
@@ -111,13 +111,7 @@ class CreditCardAPI < Sinatra::Base
   end
 
   get '/api/v1/credit_card/everything' do
-    haml :everything, locals: {
-    CreditCard.all.map do |card|
-      {
-        number: card.number, expiration_date: card.expiration_date,
-        owner: card.owner, credit_network: card.credit_network
-      }.to_json
-    }
-    end
+    haml :everything, locals: {result: CreditCard.all.map(&:to_s)    }
   end
+
 end
