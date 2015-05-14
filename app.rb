@@ -75,6 +75,7 @@ class CreditCardAPI < Sinatra::Base
   end
 
   get '/api/v1/credit_card/?' do
+    logger.info('FEATURES')
     'TO date, services offered include<br>' \
     ' GET api/v1/credit_card/validate?card_number=[card number]<br>' \
     ' GET <a href="/api/v1/credit_card/everything"> Numbers </a> '
