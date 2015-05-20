@@ -16,6 +16,9 @@ gem 'protected_attributes'
 gem 'haml'
 gem 'tux'
 
+gem 'rack-flash3'
+gem 'jwt'
+
 group :development do
   gem 'sqlite3'
   gem 'tux'

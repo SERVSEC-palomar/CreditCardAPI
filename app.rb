@@ -1,6 +1,7 @@
 require "sinatra"
 require "json"
 require "config_env"
+require 'rack-flash'
 require_relative './model/user.rb'
 require_relative './helpers/creditcard_helpers.rb'
 
@@ -9,11 +10,11 @@ require_relative './model/credit_card.rb'
 # Credit Card Web Service
 class CreditCardAPI < Sinatra::Base
   include CreditCardHelper
-  use Rack::Session::Cookie
+  use Rack::Session::Cookie, secret: ENV['MSG_KEY']
   enable :logging
 
   before do
-    @current_user = session[:user_id] ? User.find_by_id(session[:user_id]) : nil
+    @current_user = session[:auth_token] ? find_user_by_token(session[:auth_token]) : nil
   end
 
   get '/login' do
