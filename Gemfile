@@ -14,6 +14,7 @@ gem 'config_env'
 gem 'rbnacl-libsodium'
 gem 'protected_attributes'
 gem 'haml'
+gem 'tux'
 
 group :development do
   gem 'sqlite3'
