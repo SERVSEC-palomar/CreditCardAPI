@@ -18,6 +18,7 @@ gem 'tux'
 
 gem 'rack-flash3'
 gem 'jwt'
+gem 'pony'
 
 group :development do
   gem 'sqlite3'

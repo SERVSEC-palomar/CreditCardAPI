@@ -10,8 +10,13 @@ require_relative './model/credit_card.rb'
 # Credit Card Web Service
 class CreditCardAPI < Sinatra::Base
   include CreditCardHelper
-  use Rack::Session::Cookie, secret: ENV['MSG_KEY']
+
   enable :logging
+
+  configure do
+    use Rack::Session::Cookie, secret: ENV['MSG_KEY']
+    use Rack::Flash, sweep: true
+  end
 
   before do
     @current_user = session[:auth_token] ? find_user_by_token(session[:auth_token]) : nil
@@ -25,40 +30,51 @@ class CreditCardAPI < Sinatra::Base
     username = params[:username]
     password = params[:password]
     user = User.authenticate!(username, password)
-    user ? login_user(user) : redirect('/login')
+    if user # user found
+      login_user(user)
+    else
+      flash[:error] = 'User does not exists. <a href="/register"> Register here</a>'
+      redirect '/login'
+    end
+
   end
 
   get '/logout' do
-    session[:user_id] = nil
+    session[:auth_token] = nil
     redirect '/'
+    flash[:notice] = 'You have been succesfully logged out.'
   end
 
   get '/register' do
     haml :register
+    if token = params[:token]
+      begin
+        create_user_with_encrypted_token(token)
+        flash[:notice] = 'Welcome! Your account has been successfully created.'
+      rescue
+        flash[:error] = 'Your account could not be created. Your link is either expired or is invalid'
+      end
+      redirect '/'
+    else
+      haml :register
+    end
   end
 
   post '/register' do
-    logger.info('REGISTER')
-    username = params[:username]
-    fullname = params[:fullname]
-    email = params[:email]
-    address = params[:address]
-    dob = params[:dob]
-    password = params[:password]
-    password_confirm = params[:password_confirm]
-    begin
-      if password == password_confirm
-        new_user = User.new(username: username, email: email)
-        new_user.fullname = fullname
-        new_user.password = password
-        new_user.address = address
-        new_user.dob = dob
-        new_user.save ? login_user(new_user) : fail('Could not create new user')
-      else
-        fail 'Passwords do not match'
+    registration = Registration.new(params)
+
+    if (registration.complete?) && (params[:password] == params[:password_confirm])
+      begin
+        email_registration_verification(registration)
+        flash[:notice] = 'A verification link sent. Please check the email address provided.'
+        redirect '/'
+      rescue => e
+        logger.error "FAIL EMAIL: #{e}"
+        flash[:error] = 'Could not send registration verification: check email address'
+        redirect '/register'
       end
-    rescue => e
-      logger.error(e)
+    else
+      flash[:error] = 'Please fill in all fields and make sure passwords match'
       redirect '/register'
     end
   end

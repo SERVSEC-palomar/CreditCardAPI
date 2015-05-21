@@ -2,6 +2,7 @@
 %html
   %head
     %title Credit Card API
+    %link{rel:'stylesheet', type:'text/css', href:'/custom.css'}
   %body
     %h1 Welcome to Credit Card API
     - if @current_user
@@ -13,4 +14,5 @@
         = "login | "
       %a{ href: '/register' }
         register
+    = haml :flash_bar
     = yield
