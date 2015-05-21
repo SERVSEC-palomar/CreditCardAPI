@@ -8,7 +8,7 @@ require 'json'
 class User < ActiveRecord::Base
   validates :username, presence: true, uniqueness: true
   validates :hashed_password, presence: true
-  validates :email, presence: true, uniqueness: true, format: /@/
+  validates :email, presence: true, format: /@/
   validates :encrypted_fullname, presence: true
   validates :encrytped_address, presence: true
   validates :encrypted_dob, presence: true
