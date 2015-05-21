@@ -54,7 +54,7 @@ module CreditCardHelper
 	    Base64.urlsafe_encode64({'message'=>message_enc_s, 'nonce'=>nonce_s}.to_json)
 	 end
 
-	def decrypt_message(enc_msg)
+	def decrypt_message(secret_message)
 	    key = Base64.urlsafe_decode64(ENV['MSG_KEY'])
 	    secret_box = RbNaCl::SecretBox.new(key)
 	    message_h = JSON.parse(Base64.urlsafe_decode64(secret_message))
