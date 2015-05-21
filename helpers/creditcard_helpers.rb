@@ -44,7 +44,7 @@ module CreditCardHelper
 	    'your email and activate your account.</p>'
   	end
 
-	def encrypt_message(token)
+	def encrypt_message(message)
 	    key = Base64.urlsafe_decode64(ENV['MSG_KEY'])
 	    secret_box = RbNaCl::SecretBox.new(key)
 	    nonce = RbNaCl::Random.random_bytes(secret_box.nonce_bytes)
