@@ -3,7 +3,6 @@ ruby '2.2.0'
 
 gem 'json'
 gem 'minitest'
-gem 'openssl'
 gem 'sinatra'
 gem 'thin'
 gem 'rake'
@@ -13,12 +12,7 @@ gem 'sinatra-activerecord'
 gem 'config_env'
 gem 'rbnacl-libsodium'
 gem 'protected_attributes'
-gem 'haml'
 gem 'tux'
-
-gem 'rack-flash3'
-gem 'jwt'
-gem 'pony'
 
 group :development do
   gem 'sqlite3'
