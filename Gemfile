@@ -12,15 +12,7 @@ gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'config_env'
 gem 'rbnacl-libsodium'
-gem 'protected_attributes'
-gem 'haml'
 gem 'tux'
-
-gem 'rack-flash3'
-gem 'jwt'
-gem 'pony'
-
-gem 'rack-ssl-enforcer'
 
 group :development do
   gem 'sqlite3'
