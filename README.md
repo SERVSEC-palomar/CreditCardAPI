@@ -15,4 +15,4 @@ https://credit-card-service-app.herokuapp.com/api/v1/credit_card/validate?card_n
 Depending on whether the number is invalid or valid the App returns a string like
 ```{"Card":"4024097178888052","validated": "true/false"} ```
 
-## [Heroku Location](https://credit-card-service-app.herokuapp.com/)
+## [Heroku Location](https://palomar-api.herokuapp.com/)
