@@ -17,7 +17,7 @@ class CreditCardAPI < Sinatra::Base
   end
 
   get '/' do
-    haml :index # "The CreditCardAPI service is running"
+    "The CreditCardAPI service is running"
   end
 
   get '/api/v1/credit_card/?' do
