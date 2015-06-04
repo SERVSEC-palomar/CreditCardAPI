@@ -15,14 +15,14 @@ class CreditCardAPI < Sinatra::Base
 
   enable :logging
 
-  configure do
-    use Rack::Session::Cookie, secret: ENV['MSG_KEY']
-    use Rack::Flash, sweep: true
-  end
-
   configure :production do
     use Rack::SslEnforcer
     set :session_secret, ENV['MSG_KEY']
+  end
+
+  configure do
+    use Rack::Session::Cookie, secret: settings.session_secret
+    use Rack::Flash, sweep: true
   end
 
   before do
