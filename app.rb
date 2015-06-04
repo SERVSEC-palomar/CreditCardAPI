@@ -1,3 +1,4 @@
+### MAIN
 require "sinatra"
 require "json"
 require "config_env"
@@ -6,6 +7,7 @@ require_relative './model/user.rb'
 require_relative './helpers/creditcard_helpers.rb'
 
 require_relative './model/credit_card.rb'
+require 'rack/ssl-enforcer'
 
 # Credit Card Web Service
 class CreditCardAPI < Sinatra::Base
@@ -16,6 +18,11 @@ class CreditCardAPI < Sinatra::Base
   configure do
     use Rack::Session::Cookie, secret: ENV['MSG_KEY']
     use Rack::Flash, sweep: true
+  end
+
+  configure :production do
+    use Rack::SslEnforcer
+    set :session_secret, ENV['MSG_KEY']
   end
 
   before do

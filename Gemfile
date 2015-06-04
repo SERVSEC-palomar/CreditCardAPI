@@ -20,6 +20,8 @@ gem 'rack-flash3'
 gem 'jwt'
 gem 'pony'
 
+gem 'rack-ssl-enforcer'
+
 group :development do
   gem 'sqlite3'
   gem 'tux'
