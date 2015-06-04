@@ -4,7 +4,7 @@ require 'sinatra/activerecord'
 require_relative '../environments'
 require_relative '../lib/luhn_validator.rb'
 require 'json'
-require 'openssl'
+# require 'openssl'
 require 'rbnacl/libsodium'
 require 'base64'
 
@@ -70,12 +70,12 @@ def hash
 end
 
 # return a cryptographically secure hash
-def hash_secure
-  # TODO: Use sha256 from openssl to create a cryptographically secure hash.
-  #       Credit cards with identical information should produce the same hash.
-
-  sha256 = OpenSSL::Digest::SHA256.new
-  sha256.digest(self.to_s).unpack('h*')
-end
+# def hash_secure
+#   # TODO: Use sha256 from openssl to create a cryptographically secure hash.
+#   #       Credit cards with identical information should produce the same hash.
+#
+#   sha256 = OpenSSL::Digest::SHA256.new
+#   sha256.digest(self.to_s).unpack('h*')
+# end
 
 end
