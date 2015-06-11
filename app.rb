@@ -34,7 +34,7 @@ class CreditCardAPI < Sinatra::Base
     logger.info('FEATURES')
     if params[:user_id]
       halt 401 unless authenticate_client_from_header(env['HTTP_AUTHORIZATION'])
-      cards = CreditCard.where(user_id: params[:user_id])
+      cards = CreditCard.where(user_id: @user_id)
       cards.map(&:to_s)
     else
       'TO date, services offered include<br>' \
