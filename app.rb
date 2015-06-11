@@ -22,21 +22,10 @@ class CreditCardAPI < Sinatra::Base
   end
 
   get '/api/v1/credit_card/?' do
-    if params[:user_id]
-      halt 401 unless authenticate_client_from_header(env['HTTP_AUTHORIZATION'])
-      user_id = @user_id
-      user_card = CreditCard.where(user_id: user_id)
-      if user_card.empty?
-        halt 404
-      else
-        return user_card.map(&:to_s)
-      end
-    else
-      logger.info('FEATURES')
-      'TO date, services offered include<br>' \
-      ' GET api/v1/credit_card/validate?card_number=[card number]<br>' \
-      ' GET <a href="/api/v1/credit_card/everything"> Numbers </a> '
-    end
+    logger.info('FEATURES')
+    'TO date, services offered include<br>' \
+    ' GET api/v1/credit_card/validate?card_number=[card number]<br>' \
+    ' GET <a href="/api/v1/credit_card/everything"> Numbers </a> '
   end
 
   get '/api/v1/credit_card/validate' do
@@ -63,8 +52,16 @@ class CreditCardAPI < Sinatra::Base
     end
   end
 
-  get '/api/v1/credit_card/everything' do
-    haml :everything, locals: {result: CreditCard.all.map(&:to_s)    }
+  get '/api/v1/credit_card/everything/:user_id' do
+    if params[:user_id]
+      halt 401 unless authenticate_client_from_header(env['HTTP_AUTHORIZATION'])
+      user_id = @user_id
+      user_card = CreditCard.where(user_id: user_id)
+      if user_card.empty?
+        halt 404
+      else
+        return user_card.map(&:to_s)
+      end
   end
 
 end
