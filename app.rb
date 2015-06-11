@@ -2,13 +2,13 @@
 require "sinatra"
 require "json"
 require "config_env"
-
+require_relative '.helpers/app_helper'
 require_relative './model/credit_card.rb'
 # require 'rack/ssl-enforcer'
 
 # Credit Card Web Service
 class CreditCardAPI < Sinatra::Base
-
+  include AppHelper
   enable :logging
 
   # configure :production do
@@ -32,17 +32,31 @@ class CreditCardAPI < Sinatra::Base
 
   get '/api/v1/credit_card/?' do
     logger.info('FEATURES')
-    'TO date, services offered include<br>' \
-    ' GET api/v1/credit_card/validate?card_number=[card number]<br>' \
-    ' GET <a href="/api/v1/credit_card/everything"> Numbers </a> '
+    if params[:user_id]
+      halt 401 unless authenticate_client_from_header(env['HTTP_AUTHORIZATION'])
+      cards = CreditCard.where(user_id: params[:user_id])
+      cards.map(&:to_s)
+    else
+      'TO date, services offered include<br>' \
+      ' GET api/v1/credit_card/validate?card_number=[card number]<br>' \
+      ' GET <a href="/api/v1/credit_card/everything"> Numbers </a> '
+    end
   end
 
   get '/api/v1/credit_card/validate' do
-    card = CreditCard.new(number: params[:card_number])
-    {"Card" => params[:card_number], "validated" => card.validate_checksum}.to_json
+    logger.info('VALIDATE')
+    begin
+      halt 401 unless authenticate_client_from_header(env['HTTP_AUTHORIZATION'])
+      card = CreditCard.new(number: params[:number])
+      {"Card" => params[:number], "validated" => card.validate_checksum}.to_json
+    rescue => e
+      logger.error(e)
+      redirect '/api/v1/credit_card'
   end
 
   post '/api/v1/credit_card' do
+    content_type :json
+    halt 401 unless authenticate_client_from_header(env['HTTP_AUTHORIZATION'])
     card_json = JSON.parse(request.body.read)
     begin
       number = card_json['number']
@@ -51,9 +65,11 @@ class CreditCardAPI < Sinatra::Base
       owner = card_json['owner']
       card = CreditCard.new(number: number, credit_network: credit_network,
                             owner: owner, expiration_date: expiration_date)
+      card.user_id = @user_id
       halt 400 unless card.validate_checksum
       status 201 if card.save
-    rescue
+    rescue => e
+      logger.error(e)
       halt 410
     end
   end

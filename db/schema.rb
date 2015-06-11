@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20150423144930) do
     t.string "owner"
     t.string "credit_network"
     t.string "expiration_date"
+    t.string "user_id"
     t.text   "encrypted_number"
   end
 
