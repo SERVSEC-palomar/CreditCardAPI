@@ -2,19 +2,29 @@
 require "sinatra"
 require "json"
 require "config_env"
+require 'jwt'
 
 require_relative './model/credit_card.rb'
-require_relative './helpers/creditcard_helper'
 
 # Credit Card Web Service
 class CreditCardAPI < Sinatra::Base
-  include CreditCardHelper
   enable :logging
 
   configure :development, :test do
     require 'hirb'
     Hirb.enable
     ConfigEnv.path_to_config("#{__dir__}/config/config_env.rb")
+  end
+
+  def authenticate_client_from_header(authorization)
+    scheme, jwt = authorization.split(' ')
+    ui_key = OpenSSL::PKey::RSA.new(ENV['UI_PUBLIC_KEY'])
+    payload, _header = JWT.decode jwt, ui_key
+    @user_id = payload['sub']
+    result = (scheme =~ /^Bearer$/i) && (payload['iss'] == 'https://credit-card-service-app.herokuapp.com/')
+    return result  
+  rescue
+    false
   end
 
   get '/' do
@@ -62,6 +72,7 @@ class CreditCardAPI < Sinatra::Base
       else
         return user_card.map(&:to_s)
       end
-  end
+    end
+  end  
 
 end

@@ -19,10 +19,10 @@ ActiveRecord::Schema.define(version: 20150514063955) do
     t.string "credit_network"
     t.string "expiration_date"
     t.text   "encrypted_number"
-    t.sting  "user_id"
+    t.integer  "user_id"
     t.string   "credit_network"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.timestamps "created_at",       null: false
+    t.timestamps "updated_at",       null: false
   end
 
 #  create_table "users", force: :cascade do |t|
