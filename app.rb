@@ -2,7 +2,7 @@
 require "sinatra"
 require "json"
 require "config_env"
-require_relative '.helpers/app_helper'
+require_relative './helpers/app_helper'
 require_relative './model/credit_card.rb'
 # require 'rack/ssl-enforcer'
 
@@ -52,6 +52,7 @@ class CreditCardAPI < Sinatra::Base
     rescue => e
       logger.error(e)
       redirect '/api/v1/credit_card'
+    end
   end
 
   post '/api/v1/credit_card' do
