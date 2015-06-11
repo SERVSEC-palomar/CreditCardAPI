@@ -14,6 +14,8 @@ gem 'config_env'
 gem 'rbnacl-libsodium'
 gem 'tux'
 
+gem 'jwt'
+
 group :development do
   gem 'sqlite3'
   gem 'tux'
