@@ -19,19 +19,23 @@ ActiveRecord::Schema.define(version: 20150514063955) do
     t.string "credit_network"
     t.string "expiration_date"
     t.text   "encrypted_number"
+    t.sting  "user_id"
+    t.string   "credit_network"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string   "username"
-    t.string   "encrypted_fullname"
-    t.string   "encrytped_address"
-    t.string   "encrypted_dob"
-    t.string   "email"
-    t.string   "hashed_password"
-    t.string   "nonce"
-    t.string   "salt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
+#  create_table "users", force: :cascade do |t|
+#    t.string   "username"
+#    t.string   "encrypted_fullname"
+#    t.string   "encrytped_address"
+#    t.string   "encrypted_dob"
+#    t.string   "email"
+#    t.string   "hashed_password"
+#    t.string   "nonce"
+#    t.string   "salt"
+#    t.datetime "created_at"
+#    t.datetime "updated_at"
+#  end
 
 end

@@ -4,10 +4,11 @@ require "json"
 require "config_env"
 
 require_relative './model/credit_card.rb'
+require_relative './helpers/creditcard_helper'
 
 # Credit Card Web Service
 class CreditCardAPI < Sinatra::Base
-
+  include CreditCardHelper
   enable :logging
 
   configure :development, :test do
@@ -21,18 +22,32 @@ class CreditCardAPI < Sinatra::Base
   end
 
   get '/api/v1/credit_card/?' do
-    logger.info('FEATURES')
-    'TO date, services offered include<br>' \
-    ' GET api/v1/credit_card/validate?card_number=[card number]<br>' \
-    ' GET <a href="/api/v1/credit_card/everything"> Numbers </a> '
+    if params[:user_id]
+      halt 401 unless authenticate_client_from_header(env['HTTP_AUTHORIZATION'])
+      user_id = @user_id
+      user_card = CreditCard.where(user_id: user_id)
+      if user_card.empty?
+        halt 404
+      else
+        return user_card.map(&:to_s)
+      end
+    else
+      logger.info('FEATURES')
+      'TO date, services offered include<br>' \
+      ' GET api/v1/credit_card/validate?card_number=[card number]<br>' \
+      ' GET <a href="/api/v1/credit_card/everything"> Numbers </a> '
+    end
   end
 
   get '/api/v1/credit_card/validate' do
-    card = CreditCard.new(number: params[:card_number])
+    halt 401 unless authenticate_client_from_header(env['HTTP_AUTHORIZATION'])
+    card = CreditCard.new(number: "#{params[:card_number]}")
     {"Card" => params[:card_number], "validated" => card.validate_checksum}.to_json
   end
 
   post '/api/v1/credit_card' do
+    content_type :json
+    halt 401 unless authenticate_client_from_header(env['HTTP_AUTHORIZATION'])
     card_json = JSON.parse(request.body.read)
     begin
       number = card_json['number']
