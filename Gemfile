@@ -16,6 +16,9 @@ gem 'tux'
 
 gem 'jwt'
 
+gem 'dalli'
+gem 'activesupport'
+
 group :development do
   gem 'sqlite3'
   gem 'tux'
